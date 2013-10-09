@@ -1,0 +1,23 @@
+add twitter bootstrap files
+add items to pom.xml
+	jackson
+check & setup MVC requirements
+setup spring MVC controllers for entities
+setup main view index page
+create partials for each persistant entity
+	create form fields for each field
+setup ang resources/routes for each entity
+
+---------------------
+
+is it possible to piggyback on the methods in "web mvc" roo addon to rely on their upgrades and fixes?
+should the addon just create an additional view on the existing roo mvc standard?
+
+---------------------
+roo commands to start and stop the addon
+---------------------
+osgi start --url file:///Users/Ben/Documents/workspace/roo-angularjs/target/com.killersite.roo.addon.ang-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.killersite.roo.addon.ang
+
+web mvc install bootstrap
+
