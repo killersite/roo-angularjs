@@ -1,10 +1,40 @@
+angular test
+
+angular setup
+angular all
+angular controller
+angular route
+angular service
+
+@RooAngularEntity
+    @RooJson
+    page
+---------
+    /**
+     * TODO
+        add annotations to entities
+             @RooJson
+        change the web.xml to point spring only at /api
+        add @AngularEndpoint
+        add addon dependency to pom.xml
+        install all angular files
+             bower.xml
+             index.html
+             etc
+        add items to pom.xml
+             build plugins
+        create html partials for each persistent entity
+            create html form fields for each field
+        setup ang resources/routes for each entity
+     */
+-----------------
 add twitter bootstrap files
 add items to pom.xml
 	jackson
 check & setup MVC requirements
 setup spring MVC controllers for entities
 setup main view index page
-create partials for each persistant entity
+create partials for each persistent entity
 	create form fields for each field
 setup ang resources/routes for each entity
 
@@ -16,7 +46,7 @@ should the addon just create an additional view on the existing roo mvc standard
 ---------------------
 roo commands to start and stop the addon
 ---------------------
-osgi start --url file:///Users/Ben/Documents/workspace/roo-angularjs/target/com.killersite.roo.addon.ang-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users\Ben\IdeaProjects\roo-angularjs\target/com.killersite.roo.addon.ang-0.1.0.BUILD-SNAPSHOT.jar
 osgi uninstall --bundleSymbolicName com.killersite.roo.addon.ang
 
 web mvc install bootstrap

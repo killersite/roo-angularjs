@@ -1,9 +1,10 @@
 package com.killersite.roo.addon.ang;
 
+import org.springframework.roo.model.JavaPackage;
 import org.springframework.roo.model.JavaType;
 
 /**
- * Interface of operations this add-on offers. Typically used by a command type or an external add-on.
+ * Interface of angOperations this add-on offers. Typically used by a command type or an external add-on.
  *
  * @since 1.1
  */
@@ -14,15 +15,35 @@ public interface AngOperations {
      * 
      * @return true if it should be available, otherwise false
      */
-    boolean isCommandAvailable();
+    boolean isAngularInstallationPossible();
 
     /**
-     * Annotate all Java types with the trigger of this add-on
+     * annotate all entities with @RooJson
+     */
+    void annotateAllJpaWithRooJson();
+
+    //    web mvc json setup
+    void doMvcJsonAll(JavaPackage javaPackage);
+
+    //    web mvc json all --package com.ex.web
+    void doMvcJsonSetup();
+
+    void addThisAddonDependancyToPom();
+
+    /**
+     * Annotate all JpaBeans with @Angular
      */
     void annotateAll();
+
+    /**
+     * annotate a JpaBean with @Anguar
+     * @param javaType
+     */
+    void annotateType(JavaType javaType);
     
     /**
      * Setup all add-on artifacts (dependencies in this case)
      */
-    void setup();
+    void setupAngularFiles();
+
 }

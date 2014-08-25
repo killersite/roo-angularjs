@@ -1,0 +1,36 @@
+<!-- Needs Design work -->
+<form name="loginForm" method="POST" class="form-horizontal" style="margin-bottom: 0">
+
+    <div class="modal-body">
+
+        <fieldset>
+            <div class="control-group">
+                <div class="controls"></div>
+                <h2>Login</h2>
+                <h4 data-ng-bind="loginError" class="error"></h4>
+            </div>
+            <div class="control-group" data-ng-class="{error: loginForm.username.$invalid}">
+                <label class="control-label" for="username">Username:</label>
+
+                <div class="controls">
+                    <input ng-model="username" id="username" type='text' name='username' required/>
+                    <span class="help-inline" data-ng-show="loginForm.username.$error.required">Required</span>
+                </div>
+            </div>
+            <div class="control-group" data-ng-class="{error: loginForm.password.$invalid}">
+                <label class="control-label" for="password">Password</label>
+
+                <div class="controls">
+                    <input ng-model="password" id="password" type='password' name='password' required/>
+                    <span class="help-inline" data-ng-show="loginForm.password.$error.required">Required</span>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <button id="btn" class="btn btn-primary" ng-click="sendLogin(username, password)"
+                ng-disabled="loginForm.$invalid">Login
+        </button>
+    </div>
+</form>
+

@@ -1,12 +1,20 @@
 package com.killersite.roo.addon.ang;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.service.component.ComponentContext;
+import org.springframework.roo.addon.web.mvc.controller.details.JavaTypeMetadataDetails;
+import org.springframework.roo.addon.web.mvc.controller.details.WebMetadataService;
+import org.springframework.roo.addon.web.mvc.controller.scaffold.WebScaffoldMetadata;
+import org.springframework.roo.addon.web.mvc.jsp.JspMetadata;
 import org.springframework.roo.classpath.PhysicalTypeIdentifier;
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
 import org.springframework.roo.classpath.itd.AbstractItdMetadataProvider;
 import org.springframework.roo.classpath.itd.ItdTypeDetailsProvidingMetadataItem;
+import org.springframework.roo.classpath.scanner.MemberDetails;
+import org.springframework.roo.metadata.MetadataService;
 import org.springframework.roo.model.JavaType;
 import org.springframework.roo.project.LogicalPath;
 
@@ -21,6 +29,10 @@ import org.springframework.roo.project.LogicalPath;
 @Service
 public final class AngMetadataProvider extends AbstractItdMetadataProvider {
 
+    @Reference
+    private MetadataService metadataService;
+    @Reference private WebMetadataService webMetadataService;
+
     /**
      * The activate method for this OSGi component, this will be called by the OSGi container upon bundle activation 
      * (result of the 'addon install' command) 
@@ -29,7 +41,27 @@ public final class AngMetadataProvider extends AbstractItdMetadataProvider {
      */
     protected void activate(ComponentContext context) {
         metadataDependencyRegistry.registerDependency(PhysicalTypeIdentifier.getMetadataIdentiferType(), getProvidesType());
-        addMetadataTrigger(new JavaType(RooAng.class.getName()));
+        addMetadataTrigger(new JavaType(AngularEndpoint.class.getName()));
+
+        // copied code from
+//        final WebScaffoldMetadata webScaffoldMetadata = (WebScaffoldMetadata) metadataService
+//                .get(webScaffoldMetadataKey);
+//        if (webScaffoldMetadata == null || !webScaffoldMetadata.isValid()) {
+//            // Can't get the corresponding scaffold, so we certainly don't need
+//            // to manage any JSPs at this time
+//            return null;
+//        }
+//        final JavaType formBackingType = webScaffoldMetadata
+//                .getAnnotationValues().getFormBackingObject();
+//        final MemberDetails memberDetails = webMetadataService
+//                .getMemberDetails(formBackingType);
+//        final JavaTypeMetadataDetails formBackingTypeMetadataDetails = webMetadataService
+//                .getJavaTypeMetadataDetails(formBackingType, memberDetails,
+//                        jspMetadataId);
+//        Validate.notNull(formBackingTypeMetadataDetails,
+//                "Unable to obtain metadata for type %s",
+//                formBackingType.getFullyQualifiedTypeName());
+
     }
     
     /**
@@ -40,7 +72,7 @@ public final class AngMetadataProvider extends AbstractItdMetadataProvider {
      */
     protected void deactivate(ComponentContext context) {
         metadataDependencyRegistry.deregisterDependency(PhysicalTypeIdentifier.getMetadataIdentiferType(), getProvidesType());
-        removeMetadataTrigger(new JavaType(RooAng.class.getName()));    
+        removeMetadataTrigger(new JavaType(AngularEndpoint.class.getName()));
     }
     
     /**

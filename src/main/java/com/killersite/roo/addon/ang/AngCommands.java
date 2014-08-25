@@ -16,82 +16,82 @@ import org.springframework.roo.shell.CliOption;
 import org.springframework.roo.shell.CommandMarker;
 import org.springframework.roo.support.logging.HandlerUtils;
 
-/**
- * Sample of a command class. The command class is registered by the Roo shell following an
- * automatic classpath scan. You can provide simple user presentation-related logic in this
- * class. You can return any objects from each method, or use the logger directly if you'd
- * like to emit messages of different severity (and therefore different colours on 
- * non-Windows systems).
- * 
- * @since 1.1
- */
+import static org.springframework.roo.shell.OptionContexts.UPDATE;
+
 @Component // Use these Apache Felix annotations to register your commands class in the Roo container
 @Service
 public class AngCommands implements CommandMarker { // All command types must implement the CommandMarker interface
-    
+
     private static Logger LOGGER = HandlerUtils.getLogger(AngCommands.class);
 
-    @Reference private ControllerOperations controllerOperations;
-    @Reference private MetadataService metadataService;
-    @Reference private ProjectOperations projectOperations;
-    @Reference private TypeLocationService typeLocationService;
+    @Reference
+    private ControllerOperations controllerOperations;
+    @Reference
+    private MetadataService metadataService;
+    @Reference
+    private ProjectOperations projectOperations;
+    @Reference
+    private TypeLocationService typeLocationService;
+    @Reference
+    AngOperations angOperations;
 
-	/**
-     * Get a reference to the AngOperations from the underlying OSGi container
-     */
-    @Reference private AngOperations operations;
-    
-    /**
-     * This method is optional. It allows automatic command hiding in situations when the command should not be visible.
-     * For example the 'entity' command will not be made available before the user has defined his persistence settings 
-     * in the Roo shell or directly in the project.
-     * 
-     * You can define multiple methods annotated with {@link CliAvailabilityIndicator} if your commands have differing
-     * visibility requirements.
-     * 
-     * @return true (default) if the command should be visible at this stage, false otherwise
-     */
-    @CliAvailabilityIndicator({ "web angularjs setup", "web angularjs all" })
+    @CliAvailabilityIndicator({"angular setup", "angular all", "angular test"})
     public boolean isCommandAvailable() {
-        return operations.isCommandAvailable();
+        return angOperations.isAngularInstallationPossible();
     }
-    
-    /**
-     * TODO
-add twitter bootstrap files
-add items to pom.xml
-	jackson
-check & setup MVC requirements
-setup spring MVC controllers for entities
-setup main view index page
-create partials for each persistant entity
-	create form fields for each field
-setup ang resources/routes for each entity
 
-     */
-    @CliCommand(value = "web angularjs all", help = "Setup or refresh the AngularJs view on all Entities")
-    public void all(
-    		@CliOption(key = "package", mandatory = true, optionContext = "update", help = "The package in which new controllers will be placed") final JavaPackage javaPackage
-    		) {
-//        operations.annotateAll();
+    @CliCommand(value = "angular test", help = "testing command for angular add-on")
+    public void test(
+            @CliOption(key = "package",
+                    mandatory = false,
+                    optionContext = UPDATE,
+                    help = "The package in which new controllers will be placed") final JavaPackage javaPackage) {
+        // the project's POM needs the dependency for the Annotations
+        angOperations.addThisAddonDependancyToPom();
 
-        // FIXME: from mvc-all operation
-        if (!javaPackage.getFullyQualifiedPackageName().startsWith(
-                	projectOperations.getTopLevelPackage( projectOperations.getFocusedModuleName() ).getFullyQualifiedPackageName()
-                )) {
-            LOGGER.warning("Your controller was created outside of the project's top level package and is therefore not included in the preconfigured component scanning. Please adjust your component scanning manually in webmvc-config.xml");
-        }
-        
-        // FIXME extract the relevant portions from this addon
-        controllerOperations.generateAll(javaPackage);
+        //json all
+        angOperations.annotateAllJpaWithRooJson();
+
+        //web mvc json setup
+        angOperations.doMvcJsonSetup();
+
+        //web mvc json all --package ~.web
+        angOperations.doMvcJsonAll(javaPackage);
+
+        // annotate all @controllers
+        angOperations.annotateAll();
+
+        angOperations.setupAngularFiles();
     }
-    
-    /**
-     * This method registers a command with the Roo shell. It has no command attribute.
-     * 
-     */
-    @CliCommand(value = "web angularjs setup", help = "Initial setup of AngularJs dependancies")
+
+    @CliCommand(value = "angular all", help = "Generate Route, Model, Controller, and View for all Persistent Entities")
+    public void all() {
+    }
+
+    @CliCommand(value = "angular setup", help = "Initial setup of AngularJs dependencies and files")
     public void setup() {
-        operations.setup();
     }
+
+    @CliCommand(value = "angular entity", help = "Generate Angular resources for specified Entity")
+    public void addEntity() {
+    }
+
+    @CliCommand(value = "angular controller", help = "Generate a stub controller, route, and view")
+    public void addController() {
+    }
+
+    @CliCommand(value = "angular route", help = "Generate a stub route file")
+    public void addRoute() {
+    }
+
+    @CliCommand(value = "angular service")
+    public void addService() {
+    }
+
 }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~ SAMPLE CODE ~~~~~~~~
+
+// generates controllers from all persistant entities
+//        controllerOperations.generateAll(javaPackage);

@@ -1,0 +1,34 @@
+<script type="text/ng-template" id="loginModal.html" xmlns="http://www.w3.org/1999/html">
+
+    <form method="POST" name="form" novalidate id="loginModalPanel"
+          class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+          ng-submit="submit()">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Your session has expired. Please re-login.</h4>
+        </div>
+        <div class="modal-body">
+            <div ng-show="loginError" class="alert alert-danger">
+                <div>{{loginError}}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input class="form-control" ng-model="username" id="username" type='text' name='username' required/>
+            </div>
+
+            <div class="form-group">
+                <label class="modal-body-textBody-login-password" for="password">Password:</label>
+                <input class="form-control" ng-model="password" id="password" type='password' name='password' required/>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" ng-click="sendLogin(username, password)" ng-disabled="form.$invalid"
+                    class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span> Login
+            </button>
+        </div>
+    </form>
+
+</script>
